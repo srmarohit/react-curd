@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {movies} from '../data';
 import MovieEditModal from './movieEditModal';
+import MovieAddModal from './movieAddModal'
 class MovieList extends Component {
      constructor() {
     super();
@@ -8,6 +9,7 @@ class MovieList extends Component {
         movies: movies,
         movie: null,
         isOpen:false,
+        isOpenAddModal:false,
         requiredItem: 0
        };
   } 
@@ -26,7 +28,7 @@ class MovieList extends Component {
     //console.log('tempMovies',tempMovies);
 
     const updatedMovies = tempMovies.map((movie) => {
-      if (movie.id == id) {
+      if (movie.id === id) {
         movie.title = title;
         movie.genre = genre;
       }
@@ -39,6 +41,25 @@ class MovieList extends Component {
       isOpen: false
     });
   };
+  openAddModal=()=>{
+      
+      this.setState({
+          isOpenAddModal:true
+          
+      })
+  }   
+  closeAddModal = () => this.setState({ isOpenAddModal: false });
+  handleAddSave = (id,genre,title) => {
+      const newMovie ={
+        id: Math.floor(Math.random() * 10000),
+        title,
+        genre
+      }
+      const tempMovies = this.state.movies;
+      tempMovies.push(newMovie);
+      this.setState({isOpenAddModal:false})
+      
+  }  
     render() { 
         const {length: count} = this.state.movies;
         return (
@@ -75,6 +96,14 @@ class MovieList extends Component {
                         showModal = {this.state.isOpen} 
                     /> 
                 }
+                <div className="mt-3 text-center mb-3">
+                    <button className="btn btn-primary btn-md" onClick={()=>this.openAddModal()}>Add Listing</button>
+                </div>
+                <MovieAddModal
+                     closeModal ={this.closeAddModal}
+                     showModal = {this.state.isOpenAddModal} 
+                     handleAddSave={this.handleAddSave}
+                />
             </div>
         );
     }
