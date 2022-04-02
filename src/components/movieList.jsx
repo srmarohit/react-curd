@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {movies} from '../data';
 import MovieEditModal from './movieEditModal';
-import MovieAddModal from './movieAddModal'
+import MovieAddModal from './movieAddModal';
+import Pagination from './pagination';
 class MovieList extends Component {
      constructor() {
     super();
@@ -10,7 +11,11 @@ class MovieList extends Component {
         movie: null,
         isOpen:false,
         isOpenAddModal:false,
-        requiredItem: 0
+        requiredItem: 0,
+        fonts:['Comforter', 'Forum', 'Lato', 'Roboto'],
+        nwefont:'arial',
+        PageSize:4,
+
        };
   } 
     handleDelete = (movie) =>{
@@ -60,6 +65,13 @@ class MovieList extends Component {
       this.setState({isOpenAddModal:false})
       
   }  
+  fontHandler = (e) =>{
+      this.setState({nwefont:e.target.value})    
+      console.log('jkjk',e.target.value)
+    }
+    handlePageChange = (page) =>{
+        console.log('page', page)
+    }
     render() { 
         const {length: count} = this.state.movies;
         return (
@@ -76,9 +88,9 @@ class MovieList extends Component {
                     </thead>
                     <tbody>
                         {this.state.movies.map(movie=>(
-                            <tr key={movie.id}>
-                                <td>{movie.id}</td>
-                                <td>{movie.genre}</td>
+                            <tr style={{fontFamily:this.state.nwefont}} key={movie.id}>
+                                <td >{movie.id}</td>
+                                <td>{movie.genre}</td>        
                                 <td>{movie.title}</td>
                                 <td>
                                     <button className="btn btn-primary btn-sm m-2" onClick={()=>this.openModal(movie)}>Edit</button>
@@ -103,6 +115,14 @@ class MovieList extends Component {
                      closeModal ={this.closeAddModal}
                      showModal = {this.state.isOpenAddModal} 
                      handleAddSave={this.handleAddSave}
+                     fonts={this.state.fonts}
+                     fontHandler={this.fontHandler}
+                />
+                <Pagination
+                    itemsCount={count}
+                    PageSize={this.state.PageSize}
+                    onPageChanges={this.handlePageChange}
+
                 />
             </div>
         );

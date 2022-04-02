@@ -43,5 +43,10 @@ export const movies = [
     id: 1009,
     title: "Holidaynew1",
     genre: "thriller and movie1"
+  },
+  {
+    id: 1010,
+    title: "Holidaynew2",
+    genre: "thriller and movie1"
   }
 ];

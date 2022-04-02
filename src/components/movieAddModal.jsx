@@ -4,7 +4,8 @@ class MovieAddModal extends Component {
     state = { 
         id:'',
         genre:'',
-        title:''
+        title:'',
+        
     } 
     idHandler = (e) =>{
         this.setState({id:e.target.value})
@@ -15,6 +16,12 @@ class MovieAddModal extends Component {
     titleHandler = (e) =>{
         this.setState({title:e.target.value})
     }
+    handlekeyPress = (e) =>{
+        if (!/[0-9]/.test(e.key)) {
+        e.preventDefault();
+        }
+    }
+    
     render() { 
         const{id,genre,title} = this.state
         
@@ -36,7 +43,8 @@ class MovieAddModal extends Component {
                          value={this.state.id}   
                          type="text" 
                          className="form-control"
-                         onChange={(e)=>this.idHandler(e)}   
+                         onChange={(e)=>this.idHandler(e)}  
+                         onKeyPress={(e)=> this.handlekeyPress(e)}
                         />
                     </div>
                     <div className="mb-3">
@@ -57,12 +65,31 @@ class MovieAddModal extends Component {
                             onChange={(e)=>this.titleHandler(e)} 
                          />
                     </div>
+                    <div className="mb-3">
+                        <label>Add Font Family</label>
+                        <select className="form-control"
+                            onChange={(e)=>this.props.fontHandler(e)} 
+                        >
+                            {
+                                this.props.fonts.map(font => (
+                                    <option  
+                                        value={font} key={font}
+                                        
+                                        >
+                                        {font}
+                                    </option>    
+                                ))
+                            }
+                            
+                            
+                        </select>
+                    </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <button 
                         className="btn btn-primary" 
                         onClick={()=>this.props.handleAddSave(id, genre, title)}
-                        disabled = { id   === '' ? 'disabled' : ''}
+                        disabled = { id === '' || genre === '' || title === ''? 'disabled' : ''}
                     >Save changes</button>
                      <Button variant="secondary" onClick={this.props.closeModal}>
                         Cancel
