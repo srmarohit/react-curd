@@ -15,6 +15,7 @@ class MovieList extends Component {
         fonts:['Comforter', 'Forum', 'Lato', 'Roboto'],
         nwefont:'arial',
         PageSize:4,
+        currentPage:1
 
        };
   } 
@@ -70,10 +71,12 @@ class MovieList extends Component {
       console.log('jkjk',e.target.value)
     }
     handlePageChange = (page) =>{
+        this.setState({ currentPage:page });    
         console.log('page', page)
     }
     render() { 
         const {length: count} = this.state.movies;
+        const {PageSize, currentPage} = this.state;
         return (
             <div className="container">
                 <div>Total Movies:{count}</div>
@@ -120,7 +123,8 @@ class MovieList extends Component {
                 />
                 <Pagination
                     itemsCount={count}
-                    PageSize={this.state.PageSize}
+                    PageSize={PageSize}
+                    currentPage={currentPage}
                     onPageChanges={this.handlePageChange}
 
                 />
