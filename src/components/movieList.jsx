@@ -3,6 +3,7 @@ import {movies} from '../data';
 import MovieEditModal from './movieEditModal';
 import MovieAddModal from './movieAddModal';
 import Pagination from './pagination';
+import {paginate} from '../utils/paginate';
 class MovieList extends Component {
      constructor() {
     super();
@@ -14,7 +15,7 @@ class MovieList extends Component {
         requiredItem: 0,
         fonts:['Comforter', 'Forum', 'Lato', 'Roboto'],
         nwefont:'arial',
-        PageSize:4,
+        pageSize:4,
         currentPage:1
 
        };
@@ -76,7 +77,8 @@ class MovieList extends Component {
     }
     render() { 
         const {length: count} = this.state.movies;
-        const {PageSize, currentPage} = this.state;
+        const {pageSize, currentPage, movies:allMovies} = this.state;
+        const movies = paginate(allMovies, pageSize,  currentPage)
         return (
             <div className="container">
                 <div>Total Movies:{count}</div>
@@ -90,7 +92,7 @@ class MovieList extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.movies.map(movie=>(
+                        {movies.map(movie=>(
                             <tr style={{fontFamily:this.state.nwefont}} key={movie.id}>
                                 <td >{movie.id}</td>
                                 <td>{movie.genre}</td>        
@@ -123,7 +125,7 @@ class MovieList extends Component {
                 />
                 <Pagination
                     itemsCount={count}
-                    PageSize={PageSize}
+                    pageSize={pageSize}
                     currentPage={currentPage}
                     onPageChanges={this.handlePageChange}
 
